@@ -76,4 +76,21 @@ public class InventoryTests
         Assert.Equal(0, ctx.HealApplied);
         Assert.Null(ctx.LastEquippedSlot);
     }
+    
+    [Fact]
+    public void Add_ShouldReturnFalse_WhenCapacityReached()
+    {
+        var inv = new Inventory(capacity: 1);
+        inv.Add(new ConsumableItem("Potion", "heal", 5));
+        var ok = inv.Add(new ConsumableItem("Potion", "heal", 5));
+        Assert.False(ok);
+        Assert.Equal(1, inv.Count);
+    }
+
+    [Fact]
+    public void Capacity_Default_IsIntMaxValue()
+    {
+        var inv = new Inventory();
+        Assert.Equal(int.MaxValue, inv.Capacity);
+    }
 }

@@ -1,14 +1,28 @@
 using InventorySystem.Models;
-using InventorySystem.Interfaces; 
+using InventorySystem.Interfaces;
+
 namespace InventorySystem.Services;
 
 public class Inventory
 {
     private readonly List<Item> _items = new();
 
+    public int Capacity { get; }
+    public int Count => _items.Count;
+
+    public Inventory(int capacity = int.MaxValue)
+    {
+        Capacity = capacity;
+    }
+
     public IReadOnlyCollection<Item> ListAll() => _items.AsReadOnly();
 
-    public void Add(Item item) => _items.Add(item);
+    public bool Add(Item item)
+    {
+        if (Count >= Capacity) return false;
+        _items.Add(item);
+        return true;
+    }
 
     public bool Remove(Guid id)
     {
@@ -20,7 +34,7 @@ public class Inventory
 
     public Item? Find(Guid id) => _items.FirstOrDefault(i => i.Id == id);
 
-    // NEW: Use flow
+    // Use flow
     public bool Use(Guid id, IInventoryContext context)
     {
         var item = Find(id);
@@ -31,7 +45,6 @@ public class Inventory
             usable.Use(context);
             return true;
         }
-
         return false;
     }
 }
