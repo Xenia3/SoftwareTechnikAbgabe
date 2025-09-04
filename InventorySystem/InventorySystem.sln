@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventorySystem", "InventorySystem\InventorySystem.csproj", "{73D2B4F5-3050-46B4-ABE6-E18C6E60E06C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventorySystem.Tests", "InventorySystem.Tests\InventorySystem.Tests.csproj", "{FB3C4171-D618-4C4B-B562-57A6CE163599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{73D2B4F5-3050-46B4-ABE6-E18C6E60E06C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73D2B4F5-3050-46B4-ABE6-E18C6E60E06C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73D2B4F5-3050-46B4-ABE6-E18C6E60E06C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB3C4171-D618-4C4B-B562-57A6CE163599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB3C4171-D618-4C4B-B562-57A6CE163599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB3C4171-D618-4C4B-B562-57A6CE163599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB3C4171-D618-4C4B-B562-57A6CE163599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
