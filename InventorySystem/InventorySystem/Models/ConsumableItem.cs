@@ -11,6 +11,7 @@ public sealed class ConsumableItem : Item, IUsable
 
     public void Use(IInventoryContext context)
     {
-        // console prints in UI layer
+        // heal effect observable by tests
+        context.HealApplied += HealAmount;
     }
 }

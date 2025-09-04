@@ -11,6 +11,7 @@ public sealed class EquipmentItem : Item, IUsable
 
     public void Use(IInventoryContext context)
     {
-        // equip
+        // Mark last equipped slot (observable effect)
+        context.LastEquippedSlot = Slot;
     }
 }

@@ -1,5 +1,5 @@
 using InventorySystem.Models;
-
+using InventorySystem.Interfaces; 
 namespace InventorySystem.Services;
 
 public class Inventory
@@ -19,4 +19,19 @@ public class Inventory
     }
 
     public Item? Find(Guid id) => _items.FirstOrDefault(i => i.Id == id);
+
+    // NEW: Use flow
+    public bool Use(Guid id, IInventoryContext context)
+    {
+        var item = Find(id);
+        if (item is null) return false;
+
+        if (item is IUsable usable)
+        {
+            usable.Use(context);
+            return true;
+        }
+
+        return false;
+    }
 }
