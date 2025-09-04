@@ -17,7 +17,7 @@ public class Menu
 
     public void Run()
     {
-        Console.WriteLine("Inventory CLI: add <type> <name> | list | use <id> | remove <id> | help | exit");
+        Console.WriteLine("Inventory CLI: add <type> <name> | list | use <id> | remove <id> | capacity | help | exit");
         while (true)
         {
             Console.Write("> ");
@@ -48,6 +48,10 @@ public class Menu
                 case "use":
                     HandleUse(args);
                     break;
+                
+                case "capacity":
+                    HandleCapacity();
+                    break;
 
                 default:
                     if (!string.IsNullOrWhiteSpace(cmd))
@@ -65,6 +69,7 @@ public class Menu
         Console.WriteLine("  use <id>            - use an item by guid");
         Console.WriteLine("  remove <id>         - remove an item by guid");
         Console.WriteLine("  exit                - quit");
+        Console.WriteLine("  capacity            - show current count and capacity");
     }
 
     private void HandleAdd(string[] args)
@@ -119,4 +124,10 @@ public class Menu
         if (!string.IsNullOrWhiteSpace(ctx.LastEquippedSlot))
             Console.WriteLine($"equipped to {ctx.LastEquippedSlot}");
     }
+    
+    private void HandleCapacity()
+    {
+        Console.WriteLine($"count: {_inventory.Count} / capacity: {_inventory.Capacity}");
+    }
+
 }
