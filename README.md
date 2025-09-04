@@ -12,8 +12,8 @@ Find it in the repo (more info: Folder Structure)
 
 Commit Message Guidelines:
   - type: one of: feat, fix, refactor, test, docs, style, ci and others
-  - subject: imperative, low case, less than 50 characters
-  - body: what & why, about 100 characters, bullet points allowed
+  - subject: imperative, less than 50 characters
+  - body: what &/or why, about 100 characters, bullet points allowed
 
 Naming Conventions:
 
