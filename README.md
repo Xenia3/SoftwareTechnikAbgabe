@@ -7,9 +7,6 @@ Scope:
 - Collect, list, use, remove items
 - Visualised in console
 
-Class Diagram Doc:
-Find it in the repo (more info: Folder Structure)
-
 Commit Message Guidelines:
   - type: one of: feat, fix, refactor, test, docs, style, ci and others
   - subject: imperative, less than 50 characters
