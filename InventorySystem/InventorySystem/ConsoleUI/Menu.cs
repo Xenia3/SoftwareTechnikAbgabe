@@ -1,3 +1,4 @@
+using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
 
@@ -9,58 +10,103 @@ public class Menu
 
     public void Run()
     {
-        Console.WriteLine("Inventory CLI: add|list|use|remove|exit");
+        Console.WriteLine("Inventory CLI: add <type> <name> | list | use <id> | remove <id> | help | exit");
         while (true)
         {
             Console.Write("> ");
             var line = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(line)) continue;
-
-            var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            var cmd = parts[0].ToLower();
-
-            if (cmd == "exit") break;
+            var (cmd, args) = CommandParser.Parse(line ?? string.Empty);
 
             switch (cmd)
             {
+                case "exit":
+                    return;
+
+                case "help":
+                    PrintHelp();
+                    break;
+
                 case "add":
-                    var type = parts.Length > 1 ? parts[1] : "potion";
-                    var name = parts.Length > 2 ? string.Join(' ', parts.Skip(2)) : "item";
-                    var item = ItemFactory.Create(type, name);
-                    _inventory.Add(item);
-                    Console.WriteLine($"added {item.Name} ({item.Id})");
+                    HandleAdd(args);
                     break;
 
                 case "list":
-                    foreach (var it in _inventory.ListAll())
-                        Console.WriteLine($"{it.Id}  {it.Name}");
+                    HandleList();
                     break;
 
                 case "remove":
-                    if (parts.Length < 2 || !Guid.TryParse(parts[1], out var rid))
-                    {
-                        Console.WriteLine("usage: remove <guid>");
-                        break;
-                    }
-                    Console.WriteLine(_inventory.Remove(rid) ? "removed" : "not found");
+                    HandleRemove(args);
                     break;
 
                 case "use":
-                    if (parts.Length < 2 || !Guid.TryParse(parts[1], out var uid))
-                    {
-                        Console.WriteLine("usage: use <guid>");
-                        break;
-                    }
-                    var target = _inventory.Find(uid);
-                    if (target is null) { Console.WriteLine("not found"); break; }
-                    Console.WriteLine($"used {target.Name}");
-                    // Here you could call IUsable.Use(context)
+                    HandleUse(args);
                     break;
 
                 default:
-                    Console.WriteLine("commands: add <type> <name> | list | use <id> | remove <id> | exit");
+                    if (!string.IsNullOrWhiteSpace(cmd))
+                        Console.WriteLine("unknown command. type 'help' for options.");
                     break;
             }
         }
+    }
+
+    private void PrintHelp()
+    {
+        Console.WriteLine("commands:");
+        Console.WriteLine("  add <type> <name>   - add an item (e.g., potion/sword)");
+        Console.WriteLine("  list                - list all items with ids");
+        Console.WriteLine("  use <id>            - use an item by guid");
+        Console.WriteLine("  remove <id>         - remove an item by guid");
+        Console.WriteLine("  exit                - quit");
+    }
+
+    private void HandleAdd(string[] args)
+    {
+        var type = args.Length > 0 ? args[0] : "potion";
+        var name = args.Length > 1 ? string.Join(' ', args.Skip(1)) : "item";
+        var item = ItemFactory.Create(type, name);
+        _inventory.Add(item);
+        Console.WriteLine($"added {item.Name} ({item.Id})");
+    }
+
+    private void HandleList()
+    {
+        foreach (var it in _inventory.ListAll())
+            Console.WriteLine($"{it.Id}  {it.Name}");
+    }
+
+    private void HandleRemove(string[] args)
+    {
+        if (args.Length < 1 || !Guid.TryParse(args[0], out var rid))
+        {
+            Console.WriteLine("usage: remove <guid>");
+            return;
+        }
+        Console.WriteLine(_inventory.Remove(rid) ? "removed" : "not found");
+    }
+
+    private void HandleUse(string[] args)
+    {
+        if (args.Length < 1 || !Guid.TryParse(args[0], out var uid))
+        {
+            Console.WriteLine("usage: use <guid>");
+            return;
+        }
+
+        // Call the domain method and report observed effects from the context
+        var ctx = new ConsoleInventoryContext();
+        var ok = _inventory.Use(uid, ctx);
+
+        if (!ok)
+        {
+            Console.WriteLine("not found or not usable");
+            return;
+        }
+
+        if (ctx.HealApplied > 0)
+            Console.WriteLine($"healed +{ctx.HealApplied}");
+
+        if (!string.IsNullOrWhiteSpace(ctx.LastEquippedSlot))
+            Console.WriteLine($"equipped to {ctx.LastEquippedSlot}");
     }
 }
