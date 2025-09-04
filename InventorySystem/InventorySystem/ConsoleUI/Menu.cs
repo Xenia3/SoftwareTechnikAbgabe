@@ -3,10 +3,18 @@ using InventorySystem.Models;
 using InventorySystem.Services;
 
 namespace InventorySystem.ConsoleUI;
-
 public class Menu
 {
     private readonly Inventory _inventory = new();
+    private readonly IItemFactory _factory;
+
+    public Menu() : this(new DefaultItemFactory()) { }
+
+    public Menu(IItemFactory factory)
+    {
+        _factory = factory;
+    }
+
 
     public void Run()
     {
@@ -64,7 +72,7 @@ public class Menu
     {
         var type = args.Length > 0 ? args[0] : "potion";
         var name = args.Length > 1 ? string.Join(' ', args.Skip(1)) : "item";
-        var item = ItemFactory.Create(type, name);
+        var item = _factory.Create(type, name);
         _inventory.Add(item);
         Console.WriteLine($"added {item.Name} ({item.Id})");
     }

@@ -1,6 +1,8 @@
+using InventorySystem.Models;
+
 namespace InventorySystem.Interfaces;
 
-public class IItemFactory
+public interface IItemFactory
 {
-    
+    Item Create(string type, string name);
 }
