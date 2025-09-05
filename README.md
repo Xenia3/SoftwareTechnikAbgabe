@@ -1,10 +1,10 @@
 # SoftwareTechnikAbgabe
-About: Modular console inventory with collect, list, use, remove in C#
+About: Modular console inventory with add, list, use, remove in C#
 
 Topic: Inventory Management
 
 Scope:
-- Collect, list, use, remove items
+- Add, list, use, remove items
 - Visualised in console
 
 Commit Message Guidelines:
@@ -22,8 +22,34 @@ Formatting:
 - Braces: always on a new line (Allman style, C# default)
 - Blank lines: 1 blank line between methods
 - No unnecessary blank lines inside a method
-- Usings: System namespaces first, then others in alphabetical order
+- Usings: System namespaces first, then others 
 - File = Class: one class per file, filename = class name
-- Comments: // for inline or short omments, /// XML doc for public classes and methods
+- Comments: // for inline or short omments
 
 Folder Structure:
+InventorySystem/                      
+   InventorySystem/                   
+         ConsoleUI/
+         CommandParser.cs
+         ConsoleInventoryContext.cs
+         Menu.cs
+      Interfaces/
+         IInventoryContext.cs
+         IItemFactory.cs
+         IUsable.cs
+      Models/
+         ConsumableItem.cs
+         EquipmentItem.cs
+         Item.cs
+      Services/
+         DefaultItemFactory.cs
+         Inventory.cs
+         ItemFactory.cs
+      Program.cs
+  InventorySystem.Tests/             
+      Console/
+         CommandParserTests.cs
+      Services/
+         InventoryTests.cs
+      TestDoubles/
+         FakeInventoryContext.cs
